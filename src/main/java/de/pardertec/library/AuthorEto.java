@@ -73,7 +73,6 @@ public class AuthorEto {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, firstname, lastname, dateOfBirth);
     }
 

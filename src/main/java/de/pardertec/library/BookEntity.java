@@ -1,9 +1,6 @@
 package de.pardertec.library;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Objects;
@@ -12,7 +9,7 @@ import java.util.Objects;
 @Table(name = "Book")
 public class BookEntity {
 
-    private long id;
+    private Long id;
     private String title;
     private LocalDate publishingDate;
     private Locale language;
@@ -22,7 +19,7 @@ public class BookEntity {
     public BookEntity() {
     }
 
-    public BookEntity(long id, String title, LocalDate publishingDate, Locale language, long authorId, long publisherId) {
+    public BookEntity(Long id, String title, LocalDate publishingDate, Locale language, long authorId, long publisherId) {
         this.id = id;
         this.title = title;
         this.publishingDate = publishingDate;
@@ -33,11 +30,11 @@ public class BookEntity {
 
     @Id
     @GeneratedValue
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -80,7 +77,6 @@ public class BookEntity {
     public void setPublisherId(long publisherId) {
         this.publisherId = publisherId;
     }
-
 
     @Override
     public boolean equals(Object o) {
