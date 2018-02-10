@@ -1,16 +1,11 @@
 package de.pardertec.library;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Objects;
 
-@Entity
-@Table(name = "Book")
-public class BookEntity {
+
+public class BookEto {
 
     private long id;
     private String title;
@@ -19,10 +14,10 @@ public class BookEntity {
     private long authorId;
     private long publisherId;
 
-    public BookEntity() {
+    public BookEto() {
     }
 
-    public BookEntity(long id, String title, LocalDate publishingDate, Locale language, long authorId, long publisherId) {
+    public BookEto(long id, String title, LocalDate publishingDate, Locale language, long authorId, long publisherId) {
         this.id = id;
         this.title = title;
         this.publishingDate = publishingDate;
@@ -31,8 +26,6 @@ public class BookEntity {
         this.publisherId = publisherId;
     }
 
-    @Id
-    @GeneratedValue
     public long getId() {
         return id;
     }
@@ -85,8 +78,8 @@ public class BookEntity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof BookEntity)) return false;
-        BookEntity that = (BookEntity) o;
+        if (!(o instanceof BookEto)) return false;
+        BookEto that = (BookEto) o;
         return id == that.id &&
                 authorId == that.authorId &&
                 publisherId == that.publisherId &&
@@ -103,7 +96,7 @@ public class BookEntity {
 
     @Override
     public String toString() {
-        return "BookEto{" +
+        return "BookEntity{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", publishingDate=" + publishingDate +
