@@ -1,5 +1,10 @@
 package de.pardertec.library;
 
+import ma.glasnost.orika.BoundMapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.converter.builtin.PassThroughConverter;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
@@ -18,14 +23,16 @@ public class BooksBS {
     @Inject
     private PublisherDao publisherDao;
 
+    @Inject
+    private BooksMapperFactory factory;
+
     public List<BookCto> findAll() {
         List<BookEntity> books = bookDao.findAll();
 
         List<BookCto> result = new ArrayList<>();
 
         for (BookEntity book : books) {
-            BookEto bookEto = new BookEto(book.getId(), book.getTitle(), book.getPublishingDate(), book.getLanguage(), book.getAuthorId(), book.getPublisherId());
-
+            BookEto bookEto = factory.bookMapper().map(book);
             AuthorEto authorEto = findAuthorById(book.getAuthorId())
                     .orElseThrow(() -> new IllegalArgumentException("Book refers to author that does not exist."));
 
@@ -41,28 +48,17 @@ public class BooksBS {
 
     private Optional<PublisherEto> findPublisherById(long publisherId) {
         Optional<PublisherEntity> publisherEntity = publisherDao.findById(publisherId);
-
-        return publisherEntity.map(publisher -> new PublisherEto(
-                publisher.getId(),
-                publisher.getName(),
-                publisher.getCity(),
-                publisher.getCountry()
-        ));
+        return publisherEntity.map(publisher -> factory.publisherMapper().map(publisher));
     }
 
     private Optional<AuthorEto> findAuthorById(long authorId) {
-        Optional<AuthorEntity> authorEntity = authorDao.findById(authorId);
-
-        return authorEntity.map(author -> new AuthorEto(
-                author.getId(),
-                author.getFirstname(),
-                author.getLastname(),
-                author.getDateOfBirth()
-        ));
+        return authorDao
+                .findById(authorId)
+                .map(factory.authorMapper()::map);
     }
 
     public BookEto createNewBook(BookEto book) {
-        BookEntity bookEntity = new BookEntity(null, book.getTitle(), book.getPublishingDate(), book.getLanguage(), book.getAuthorId(), book.getAuthorId());
+        BookEntity bookEntity = factory.bookMapper().mapReverse(book);
         bookEntity = bookDao.persist(bookEntity);
         book.setId(bookEntity.getId());
         return book;
