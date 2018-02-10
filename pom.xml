@@ -29,7 +29,7 @@
   </dependencyManagement>
 
   <build>
-    <finalName>demo</finalName>
+    <finalName>library</finalName>
     <plugins>
       <plugin>
         <groupId>org.wildfly.swarm</groupId>
@@ -68,6 +68,12 @@
     </dependency><dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>jaxrs</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.40</version>
     </dependency>
   </dependencies>
 </project>
