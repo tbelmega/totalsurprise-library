@@ -1,9 +1,11 @@
 package de.pardertec.library;
 
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class BooksBS {
 
@@ -13,16 +15,23 @@ public class BooksBS {
     @Inject
     private AuthorDao authorDao;
 
+    @Inject
+    private PublisherDao publisherDao;
+
     public List<BookCto> findAll() {
         List<BookEntity> books = bookDao.findAll();
 
         List<BookCto> result = new ArrayList<>();
 
-        for (BookEntity book: books) {
+        for (BookEntity book : books) {
             BookEto bookEto = new BookEto(book.getId(), book.getTitle(), book.getPublishingDate(), book.getLanguage(), book.getAuthorId(), book.getPublisherId());
 
-            AuthorEto authorEto = findAuthorById(book.getAuthorId());
-            PublisherEto publisherEto = findPublisherById(book.getPublisherId());
+            AuthorEto authorEto = findAuthorById(book.getAuthorId())
+                    .orElseThrow(() -> new IllegalArgumentException("Book refers to author that does not exist."));
+
+            PublisherEto publisherEto = findPublisherById(book.getPublisherId())
+                    .orElseThrow(() -> new IllegalArgumentException("Book refers to publisher that does not exist."));
+
             BookCto cto = new BookCto(bookEto, authorEto, publisherEto);
             result.add(cto);
         }
@@ -30,16 +39,26 @@ public class BooksBS {
         return result;
     }
 
-    private PublisherEto findPublisherById(long publisherId) {
-        return new PublisherEto(publisherId, "Awesome Books Inc.", "Berlin", "Germany");
+    private Optional<PublisherEto> findPublisherById(long publisherId) {
+        Optional<PublisherEntity> publisherEntity = publisherDao.findById(publisherId);
+
+        return publisherEntity.map(publisher -> new PublisherEto(
+                publisher.getId(),
+                publisher.getName(),
+                publisher.getCity(),
+                publisher.getCountry()
+        ));
     }
 
-    private AuthorEto findAuthorById(long authorId) {
-        AuthorEntity authorEntity = authorDao.findById(authorId);
+    private Optional<AuthorEto> findAuthorById(long authorId) {
+        Optional<AuthorEntity> authorEntity = authorDao.findById(authorId);
 
-        if (authorEntity == null) return null;
-
-        return new AuthorEto(authorEntity.getId(), authorEntity.getFirstname(), authorEntity.getLastname(), authorEntity.getDateOfBirth());
+        return authorEntity.map(author -> new AuthorEto(
+                author.getId(),
+                author.getFirstname(),
+                author.getLastname(),
+                author.getDateOfBirth()
+        ));
     }
 
     public BookEto createNewBook(BookEto book) {
