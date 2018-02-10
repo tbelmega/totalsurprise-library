@@ -1,7 +1,9 @@
 package de.pardertec.library;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import de.pardertec.library.rest.LocalDateAdapter;
 
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.Locale;
 import java.util.Objects;
@@ -44,6 +46,7 @@ public class BookEto {
         this.title = title;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getPublishingDate() {
         return publishingDate;
     }

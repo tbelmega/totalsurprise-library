@@ -1,9 +1,12 @@
 package de.pardertec.library;
 
+import de.pardertec.library.rest.LocalDateAdapter;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -48,6 +51,7 @@ public class AuthorEto {
         this.lastname = lastname;
     }
 
+    @XmlJavaTypeAdapter(LocalDateAdapter.class)
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
