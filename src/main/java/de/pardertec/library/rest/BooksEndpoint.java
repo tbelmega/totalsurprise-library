@@ -28,7 +28,6 @@ public class BooksEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Response doGet() {
-
         List<BookCto> books = booksBS.findAll();
 
         return Response.ok(books).build();
