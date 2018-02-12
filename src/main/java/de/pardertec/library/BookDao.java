@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 public class BookDao {
 
@@ -22,5 +23,15 @@ public class BookDao {
     public BookEntity persist(BookEntity bookEntity) {
         em.persist(bookEntity);
         return bookEntity;
+    }
+
+    public Optional<BookEntity> findById(Long bookId) {
+        BookEntity bookEntity = em.find(BookEntity.class, bookId);
+        return Optional.ofNullable(bookEntity);
+    }
+
+    public BookEntity update(BookEntity bookEntity) {
+        BookEntity mergedEntity = em.merge(bookEntity);
+        return mergedEntity;
     }
 }

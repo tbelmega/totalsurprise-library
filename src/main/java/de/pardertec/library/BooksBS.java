@@ -63,4 +63,13 @@ public class BooksBS {
         book.setId(bookEntity.getId());
         return book;
     }
+
+    public Optional<BookEto> findBookById(Long bookId) {
+        return bookDao.findById(bookId).map(factory.bookMapper()::map);
+    }
+
+    public BookEto updateBook(BookEto book) {
+        BookEntity bookEntity = bookDao.update(factory.bookMapper().mapReverse(book));
+        return factory.bookMapper().map(bookEntity);
+    }
 }

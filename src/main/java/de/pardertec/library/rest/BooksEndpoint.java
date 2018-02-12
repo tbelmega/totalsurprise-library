@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @ApplicationScoped
 @Path("/books")
@@ -35,6 +36,7 @@ public class BooksEndpoint {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
     public Response doPost(BookEto book, @Context UriInfo uriInfo) {
 
         book = booksBS.createNewBook(book);
@@ -44,4 +46,22 @@ public class BooksEndpoint {
 
         return Response.created(uri).entity(book).build();
     }
+
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public Response getBook(@PathParam("id") Long bookId) {
+        Optional<BookEto> book = booksBS.findBookById(bookId);
+        return Response.ok(book.orElse(null)).build();
+    }
+
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=UTF-8")
+    public Response putBook(BookEto book, @PathParam("id") Long bookId) {
+        book = booksBS.updateBook(book);
+        return Response.ok(book).build();
+    }
+
 }
