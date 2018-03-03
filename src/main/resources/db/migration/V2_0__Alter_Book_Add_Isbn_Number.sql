@@ -1,0 +1,3 @@
+ALTER TABLE `Book`
+  ADD COLUMN `isbnNumber` VARCHAR(255) NULL
+  AFTER `title`;

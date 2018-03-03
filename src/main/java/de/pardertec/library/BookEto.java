@@ -11,17 +11,18 @@ import java.util.Objects;
 
 public class BookEto {
 
-    private long id;
+    private Long id;
     private String title;
     private LocalDate publishingDate;
     private Locale language;
     private long authorId;
     private long publisherId;
+    private Long dataVersion;
 
     public BookEto() {
     }
 
-    public BookEto(long id, String title, LocalDate publishingDate, Locale language, long authorId, long publisherId) {
+    public BookEto(Long id, String title, LocalDate publishingDate, Locale language, long authorId, long publisherId) {
         this.id = id;
         this.title = title;
         this.publishingDate = publishingDate;
@@ -30,11 +31,11 @@ public class BookEto {
         this.publisherId = publisherId;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -79,6 +80,13 @@ public class BookEto {
         this.publisherId = publisherId;
     }
 
+    public Long getDataVersion() {
+        return dataVersion;
+    }
+
+    public void setDataVersion(Long dataVersion) {
+        this.dataVersion = dataVersion;
+    }
 
     @Override
     public boolean equals(Object o) {
