@@ -12,7 +12,7 @@ import java.util.Optional;
 public class BookDao {
 
     @PersistenceContext
-    private EntityManager em;
+    EntityManager em;
 
     public List<BookEntity> findAll() {
         String qlString = "SELECT b FROM BookEntity b";
@@ -33,5 +33,13 @@ public class BookDao {
     public BookEntity update(BookEntity bookEntity) {
         BookEntity mergedEntity = em.merge(bookEntity);
         return mergedEntity;
+    }
+
+    public List<BookEntity> findByLanguage(Locale language) {
+        String qlString = "SELECT b FROM BookEntity b WHERE b.language = :language";
+        TypedQuery<BookEntity> query = em.createQuery(qlString, BookEntity.class);
+        return query
+                .setParameter("language", language)
+                .getResultList();
     }
 }

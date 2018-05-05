@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" version="2.1">
+
+    <persistence-unit name="TestDS" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>de.pardertec.library.BookEntity</class>
+
+        <properties>
+            <property name="javax.persistence.schema-generation.database.action" value="none"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://37.120.189.137:3306/library_dev"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.connection.username" value="eventers"/>
+            <property name="hibernate.connection.password" value="PutzDerSchwanJolly99"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+
+    </persistence-unit>
+
+</persistence>
